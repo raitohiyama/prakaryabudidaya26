@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Prakarya Budi Daya</title>
+  <link rel="icon" href="https://i.imgur.com/lS65ttF.png">
+  <!-- Lineart Icons via Phosphor -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #f57c00;
+      --primary-light: #ffb74d;
+      --bg-color: #fff3e0;
+      --text-dark: #3e2723;
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: 0 8px 32px 0 rgba(245, 124, 0, 0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Abstract Background Blobs */
+    .blob {
+      position: absolute; filter: blur(60px); z-index: -1;
+      border-radius: 50%; opacity: 0.6;
+    }
+    .blob.orange { width: 300px; height: 300px; background: #ffcc80; top: -50px; left: -50px; }
+    .blob.peach { width: 400px; height: 400px; background: #ffab91; bottom: 10%; right: -100px; }
+
+    /* Glassmorphism Class */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: var(--glass-shadow);
+    }
+
+    /* Layout */
+    header, footer { text-align: center; padding: 1.5rem; z-index: 10; }
+    header h1 { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px;}
+    
+    main { flex: 1; padding: 1rem; width: 100%; max-width: 900px; margin: 0 auto; z-index: 10; }
+    
+    footer { font-size: 0.9rem; margin-top: auto; display: flex; justify-content: center; align-items: center; gap: 10px;}
+    footer a { color: #25D366; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+
+    /* Pages Navigation */
+    .page { display: none; animation: fadeIn 0.4s ease-in-out; }
+    .page.active { display: block; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography */
+    .page-title { text-align: center; font-size: 1.3rem; margin-bottom: 0.5rem; font-weight: 700;}
+    .page-subtitle { text-align: center; font-size: 0.95rem; margin-bottom: 2rem; color: #5d4037; }
+
+    /* Grids */
+    .grid { display: grid; gap: 1rem; margin-bottom: 2rem; }
+    .grid-3x3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .grid-2x1 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .grid-3x1 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .grid-1x1 { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+
+    /* Cards / Buttons */
+    .card {
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text-dark);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .card:hover:not(.disabled) {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 12px 40px 0 rgba(245, 124, 0, 0.25);
+    }
+    .card i { font-size: 2.5rem; color: var(--primary); }
+    .card h3 { font-size: 1rem; font-weight: 600; line-height: 1.4;}
+    
+    /* Inactive / Disabled state */
+    .card.disabled {
+      background: rgba(200, 200, 200, 0.3);
+      border-color: rgba(255, 255, 255, 0.3);
+      filter: grayscale(1);
+      color: #999;
+      pointer-events: none;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    .card.disabled i { color: #999; }
+
+    /* Header Nav (Back Button) */
+    .top-nav { display: flex; align-items: center; margin-bottom: 1.5rem; display: none; }
+    .top-nav.active { display: flex; }
+    .btn-back {
+      background: none; border: none; font-size: 1.1rem; font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; gap: 5px;
+      color: var(--primary); font-weight: 600; padding: 8px 12px; border-radius: 8px;
+    }
+    .btn-back:hover { background: var(--glass-bg); }
+
+    /* Toast Notification (Glass) */
+    #toast {
+      position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border); color: var(--primary); font-weight: 600;
+      padding: 12px 24px; border-radius: 30px; z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: top 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* Fullscreen Loading Glass */
+    #loading {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(255, 243, 224, 0.6); backdrop-filter: blur(8px);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 9999; visibility: hidden; opacity: 0; transition: opacity 0.3s;
+    }
+    #loading.show { visibility: visible; opacity: 1; }
+    .spinner {
+      width: 50px; height: 50px;
+      border: 5px solid rgba(245, 124, 0, 0.3);
+      border-top-color: var(--primary); border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { margin-top: 15px; font-weight: 600; color: var(--primary); }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      .grid-2x1, .grid-3x1, .grid-3x3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Abstract BG -->
+  <div class="blob orange"></div>
+  <div class="blob peach"></div>
+
+  <!-- Global Header -->
+  <header class="glass" style="border-radius: 0 0 16px 16px; margin-bottom: 1rem;">
+    <h1><i class="ph ph-plant"></i> Prakarya Budi Daya</h1>
+  </header>
+
+  <main>
+    <!-- Back Button Component -->
+    <div class="top-nav" id="top-nav">
+      <button class="btn-back" onclick="goBack()"><i class="ph ph-caret-left"></i> Kembali</button>
+    </div>
+
+    <!-- Halaman 1: Dashboard Home -->
+    <div id="page-1" class="page active">
+      <h2 class="page-title">Pembelajaran Prakarya Budi Daya Kelas 9<br>Tahun Pelajaran 2026/2027</h2>
+      <p class="page-subtitle">Selamat Datang di Dashboard Pembelajaran Prakarya Budi Daya</p>
+      
+      <div class="grid grid-3x3">
+        <div class="card glass" onclick="navigate('page-2')">
+          <i class="ph ph-calendar-check"></i>
+          <h3>Rekap Daftar Hadir</h3>
+        </div>
+        <div class="card glass" onclick="navigate('page-3')">
+          <i class="ph ph-book-open-text"></i>
+          <h3>Materi dan Buku</h3>
+        </div>
+        <div class="card glass" onclick="navigate('page-4')">
+          <i class="ph ph-chats-teardrop"></i>
+          <h3>Tanya Jawab Online</h3>
+        </div>
+        <div class="card glass" onclick="navigate('page-5')">
+          <i class="ph ph-camera-plus"></i>
+          <h3>Dokumentasi Proyek</h3>
+        </div>
+        <div class="card glass" onclick="navigate('page-6')">
+          <i class="ph ph-pencil-line"></i>
+          <h3>Asesmen Formatif</h3>
+        </div>
+        <div class="card glass" onclick="navigate('page-7')">
+          <i class="ph ph-exam"></i>
+          <h3>Asesmen Sumatif</h3>
+        </div>
+        <!-- 3 Inactive menu items -->
+        <div class="card glass disabled">
+          <i class="ph ph-chart-bar"></i>
+          <h3>Rapor Proyek (Soon)</h3>
+        </div>
+        <div class="card glass disabled">
+          <i class="ph ph-users-three"></i>
+          <h3>Forum Diskusi (Soon)</h3>
+        </div>
+        <div class="card glass disabled">
+          <i class="ph ph-trophy"></i>
+          <h3>Papan Peringkat (Soon)</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Halaman 2: Daftar Hadir -->
+    <div id="page-2" class="page">
+      <h2 class="page-title">Rekap Daftar Hadir Semester Ganjil</h2>
+      <div class="grid grid-2x1" style="margin-top: 2rem;">
+        <a class="card glass" onclick="openLink(event, 'https://script.google.com/macros/s/AKfycbywKL7GI2NB46LhWUZbJg6j86XWlhvGF_n-pUwfeScSHuEMR907jG8mxVID7hsaE7CWsQ/exec')">
+          <i class="ph ph-calendar-plus"></i>
+          <h3>Daftar Hadir Mingguan</h3>
+        </a>
+        <!-- Diubah menjadi disabled dan ditambah (Soon) -->
+        <div class="card glass disabled">
+          <i class="ph ph-files"></i>
+          <h3>Rekap Absen Semester Ganjil (Soon)</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Halaman 3: Materi dan Buku -->
+    <div id="page-3" class="page">
+      <h2 class="page-title">Materi dan Buku Prakarya Budi Daya</h2>
+      <div class="grid grid-3x1" style="margin-top: 2rem;">
+        <a class="card glass" onclick="openLink(event, 'https://drive.google.com/file/d/1rNn-Z_ZR9UHznfVWC5hSO_9b62-9Xv6R/view?usp=drive_link')">
+          <i class="ph ph-presentation-chart"></i>
+          <h3>Pertemuan 1 - Pengantar Seni dan Prakarya</h3>
+        </a>
+        <a class="card glass" onclick="openLink(event, 'https://drive.google.com/file/d/1iueOGt_6f8a13gEXdm8hOCEHqASPtYKq/view?usp=drive_link')">
+          <i class="ph ph-leaf"></i>
+          <h3>Pertemuan 2 - Pengantar Prakarya Budi Daya</h3>
+        </a>
+        <a class="card glass" onclick="openLink(event, 'https://drive.google.com/file/d/1Uxik_QmymntMhMoqLr26_bA4k1xu9f_x/view?usp=drive_link')">
+          <i class="ph ph-book-bookmark"></i>
+          <h3>Pertemuan 3 - Buku Ajar Prakarya Budi Daya</h3>
+        </a>
+      </div>
+    </div>
+
+    <!-- Halaman 4: Sesi Tanya Jawab (Revisi) -->
+    <div id="page-4" class="page">
+      <h2 class="page-title">Sesi Tanya dan Jawab Online</h2>
+      <div class="grid grid-3x1" style="margin-top: 2rem;">
+        <a class="card glass" onclick="openLink(event, 'https://drive.google.com/file/d/1RKF-zFau21zVARepxTAyMNMYInxtLAs0/view?usp=drive_link')">
+          <i class="ph ph-question"></i>
+          <h3>Pertanyaan 1 - Pengantar Seni dan Prakarya</h3>
+        </a>
+        <a class="card glass" onclick="openLink(event, 'https://script.google.com/macros/s/AKfycbziA_z2vFUw0Hhq_3hVJdmMcMW1tPV4VMfaF6sKvIn50Fk3PODQSnPy06325rs8ZbPNsA/exec')">
+          <i class="ph ph-chats"></i>
+          <h3>Tanya Jawab 2 - Pengantar Prakarya Budi Daya</h3>
+        </a>
+        <!-- Tambahan menu ke-3 -->
+        <a class="card glass" onclick="openLink(event, 'https://drive.google.com/file/d/1F4WnariGYnIPtcKaBjqP1882HYFoz7A4/view?usp=drive_link')">
+          <i class="ph ph-video-camera"></i>
+          <h3>Review dan Pembahasan Quiz 1</h3>
+        </a>
+      </div>
+    </div>
+
+    <!-- Halaman 5: Dokumentasi Proyek -->
+    <div id="page-5" class="page">
+      <h2 class="page-title">Dokumentasi Proyek Budi Daya</h2>
+      <div class="grid grid-1x1" style="margin-top: 2rem;">
+        <a class="card glass" onclick="handleUpload(event, 'https://script.google.com/macros/s/AKfycbzE1unJZiwNlauxpFsukhFb46Pf97fXjdXupZx9TVtcDri2SAuN28BmKgzPC_dvGigSIQ/exec')">
+          <i class="ph ph-upload-simple"></i>
+          <h3>Siapkan Foto Terbaik dan Upload Dokumentasi Proyek Disini</h3>
+        </a>
+      </div>
+    </div>
+
+    <!-- Halaman 6: Asesmen Formatif -->
+    <div id="page-6" class="page">
+      <h2 class="page-title">Asesmen Formatif (Tugas Mingguan)</h2>
+      <div class="grid grid-3x1" style="margin-top: 2rem;">
+        <a class="card glass" onclick="openLink(event, 'https://drive.google.com/file/d/1zTuZbvJCK1-phhwqgoOnDROKIG8SX7V-/view?usp=drive_link')">
+          <i class="ph ph-notepad"></i>
+          <h3>Tugas 1 – Tanaman Sayuran Sekitarmu</h3>
+        </a>
+        <a class="card glass" onclick="openLink(event, 'https://drive.google.com/file/d/1ju6-0ZlWZY7HplO-8fUHqT5c7xl4PhzS/view?usp=drive_link')">
+          <i class="ph ph-spade"></i>
+          <h3>Tugas 2 – Persiapan Proyek Budi Daya</h3>
+        </a>
+        <div class="card glass disabled">
+          <i class="ph ph-lock-key"></i>
+          <h3>Tugas 3 (Soon)</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Halaman 7: Asesmen Sumatif -->
+    <div id="page-7" class="page">
+      <h2 class="page-title">Asesmen Sumatif (Tes dan Quiz)</h2>
+      <div class="grid grid-3x1" style="margin-top: 2rem;">
+        <a class="card glass" onclick="openLink(event, 'https://forms.gle/uGXJ7Ats3qMkZBf58')">
+          <i class="ph ph-clipboard-text"></i>
+          <h3>Sumatif TP 1 – Quiz<br>(120 Responden)</h3>
+        </a>
+        <a class="card glass" onclick="openLink(event, 'https://forms.gle/wv7AnzGYNGv35sfK8')">
+          <i class="ph ph-arrows-clockwise"></i>
+          <h3>Remedial Quiz TP 1<br>(93 Responden)</h3>
+        </a>
+        <div class="card glass disabled">
+          <i class="ph ph-lock-key"></i>
+          <h3>Sumatif TP 2 (Soon)</h3>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="glass" style="border-radius: 16px 16px 0 0; margin-top: 1rem;">
+    <span>&copy; 2026</span>
+    <a href="https://wa.me/6285254135739?text=Selamat%20pagi%20Pak%20Guru,%20saya%20mau%20bertanya%20" target="_blank" onclick="showToast('Membuka WhatsApp...')"> <!-- Ganti nomor WA -->
+      Pak Guru Rahmad<i class="ph ph-whatsapp-logo" style="font-size: 1.2rem;"></i>
+    </a>
+  </footer>
+
+  <!-- Toast Element -->
+  <div id="toast">Notifikasi</div>
+
+  <!-- Fullscreen Loading (Upload) -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loading-text">Memproses...</div>
+  </div>
+
+  <script>
+    // --- Routing SPA & History API untuk tombol back HP ---
+    function navigate(pageId) {
+      showPage(pageId);
+      // Push state ke history browser
+      window.history.pushState({ page: pageId }, "", "?" + pageId);
+    }
+
+    function showPage(pageId) {
+      // Sembunyikan semua halaman
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      // Tampilkan halaman yang dituju
+      document.getElementById(pageId).classList.add('active');
+      
+      // Atur tombol kembali
+      const topNav = document.getElementById('top-nav');
+      if (pageId === 'page-1') {
+        topNav.classList.remove('active');
+      } else {
+        topNav.classList.add('active');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    // Event Listener ketika tombol back di HP/Browser ditekan
+    window.onpopstate = function(event) {
+      if (event.state && event.state.page) {
+        showPage(event.state.page);
+      } else {
+        showPage('page-1'); // Default ke halaman 1
+      }
+    };
+
+    // Inisialisasi awal agar halaman 1 tercatat di history
+    window.history.replaceState({ page: 'page-1' }, "", "?page-1");
+
+    // --- Toast Notification ---
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.top = '20px';
+      setTimeout(() => {
+        toast.style.top = '-100px';
+      }, 3000);
+    }
+
+    // --- Loading Overlay & Buka Link External ---
+    function openLink(e, url) {
+      e.preventDefault();
+      showToast('Membuka tautan...');
+      setTimeout(() => {
+        window.open(url, '_blank');
+      }, 800); // Sedikit delay agar toast terlihat
+    }
+
+    // Animasi Upload khusus halaman 5
+    function handleUpload(e, url) {
+      e.preventDefault();
+      const loading = document.getElementById('loading');
+      const text = document.getElementById('loading-text');
+      
+      text.innerText = "Menyiapkan form upload...";
+      loading.classList.add('show');
+      
+      // Simulasi loading 1.5 detik sebelum membuka link form
+      setTimeout(() => {
+        loading.classList.remove('show');
+        window.open(url, '_blank');
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

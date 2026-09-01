@@ -302,10 +302,15 @@
     <!-- Halaman 5: Dokumentasi Proyek -->
     <div id="page-5" class="page">
       <h2 class="page-title">Dokumentasi Proyek Budi Daya</h2>
-      <div class="grid grid-1x1" style="margin-top: 2rem;">
+      <div class="grid grid-2x1" style="margin-top: 2rem;">
         <a class="card glass" onclick="handleUpload(event, 'https://script.google.com/macros/s/AKfycbzE1unJZiwNlauxpFsukhFb46Pf97fXjdXupZx9TVtcDri2SAuN28BmKgzPC_dvGigSIQ/exec')">
           <i class="ph ph-upload-simple"></i>
           <h3>Siapkan Foto Terbaik dan Upload Dokumentasi Proyek Disini</h3>
+        </a>
+        <!-- TOMBOL BARU DITAMBAHKAN DISINI -->
+        <a class="card glass" onclick="navigate('page-8')">
+          <i class="ph ph-images"></i>
+          <h3>Contoh Dokumentasi yang Diharapkan</h3>
         </a>
       </div>
     </div>
@@ -335,15 +340,36 @@
       <div class="grid grid-3x1" style="margin-top: 2rem;">
         <a class="card glass" onclick="openLink(event, 'https://forms.gle/uGXJ7Ats3qMkZBf58')">
           <i class="ph ph-clipboard-text"></i>
-          <h3>Sumatif TP 1 – Quiz<br>(120 Responden)</h3>
+          <h3>Sumatif TP 1 – Quiz<br>(122 Responden)</h3>
         </a>
         <a class="card glass" onclick="openLink(event, 'https://forms.gle/wv7AnzGYNGv35sfK8')">
           <i class="ph ph-arrows-clockwise"></i>
-          <h3>Remedial Quiz TP 1<br>(93 Responden)</h3>
+          <h3>Remedial Quiz TP 1<br>(99 Responden)</h3>
         </a>
         <div class="card glass disabled">
           <i class="ph ph-lock-key"></i>
           <h3>Sumatif TP 2 (Soon)</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Halaman 8: Contoh Dokumentasi (HALAMAN BARU) -->
+    <div id="page-8" class="page">
+      <h2 class="page-title">Contoh Dokumentasi yang Diharapkan</h2>
+      <div class="glass" style="margin-top: 2rem; padding: 2rem; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; border-radius: 16px;">
+        <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--text-dark);">Nama : RAHMI AULIA LESSY</p>
+        <p style="font-weight: 700; margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-dark);">Kelas : 9I</p>
+        
+        <h3 style="margin-bottom: 1rem; color: var(--primary);">Perencanaan Alat dan Bahan</h3>
+        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; justify-content: space-between;">
+          <img src="https://drive.google.com/uc?export=view&id=1DjkcLAACvmh9CS8Y1cFkffVTEZ-7-zYA" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1);" alt="Alat dan Bahan 1">
+          <img src="https://drive.google.com/uc?export=view&id=1fJwlPXaz2o5REp7SMp_B0SOer_EKjWsk" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1);" alt="Alat dan Bahan 2">
+        </div>
+
+        <h3 style="margin-bottom: 1rem; color: var(--primary);">Masa Tanam Benih/Bibit</h3>
+        <div style="display: flex; gap: 1rem; justify-content: space-between;">
+          <img src="https://drive.google.com/uc?export=view&id=17uhM61lt1XxeQCop_q1wJdRg74trIBhc" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1);" alt="Masa Tanam 1">
+          <img src="https://drive.google.com/uc?export=view&id=1WUYZJJ4clTSIeY1WnBI90KwB_NgJUX3S" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1);" alt="Masa Tanam 2">
         </div>
       </div>
     </div>

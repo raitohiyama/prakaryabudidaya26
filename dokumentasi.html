@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dokumentasi Proyek</title>
+  <link rel="icon" href="Logo.svg">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#f57c00;--bg-color:#fff3e0;--text-dark:#3e2723;--glass-bg:rgba(255,255,255,0.45);--glass-border:rgba(255,255,255,0.6);--glass-shadow:0 8px 32px 0 rgba(245,124,0,0.15)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);color:var(--text-dark);min-height:100vh;display:flex;flex-direction:column;position:relative}
+    .blob{position:absolute;filter:blur(60px);z-index:-1;border-radius:50%;opacity:0.6}
+    .blob.orange{width:300px;height:300px;background:#ffcc80;top:-50px;left:-50px}
+    .blob.peach{width:400px;height:400px;background:#ffab91;bottom:10%;right:-100px}
+    .glass{background:var(--glass-bg);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:16px;box-shadow:var(--glass-shadow)}
+    header,footer{text-align:center;padding:1.5rem;z-index:10}
+    header h1{font-size:1.5rem;font-weight:700;color:var(--primary);display:flex;align-items:center;justify-content:center;gap:8px}
+    main{flex:1;padding:1rem;width:100%;max-width:900px;margin:0 auto;z-index:10}
+    footer{font-size:0.9rem;margin-top:auto;display:flex;justify-content:center;align-items:center;gap:10px}
+    footer a{color:#25D366;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:5px}
+    .page{animation:fadeIn 0.4s ease-in-out}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .page-title{text-align:center;font-size:1.3rem;margin-bottom:0.5rem;font-weight:700}
+    .grid{display:grid;gap:1rem;margin-bottom:2rem}
+    .grid-2x1{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    .card{padding:1.5rem 1rem;text-align:center;cursor:pointer;text-decoration:none;color:var(--text-dark);transition:all 0.3s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+    .card:hover{transform:translateY(-5px);background:rgba(255,255,255,0.7);box-shadow:0 12px 40px 0 rgba(245,124,0,0.25)}
+    .card i{font-size:2.5rem;color:var(--primary)}
+    .card h3{font-size:1rem;font-weight:600;line-height:1.4}
+    .top-nav{display:flex;align-items:center;margin-bottom:1.5rem}
+    .btn-back{background:none;border:none;font-size:1.1rem;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:5px;color:var(--primary);font-weight:600;padding:8px 12px;border-radius:8px;text-decoration:none}
+    .btn-back:hover{background:var(--glass-bg)}
+    #toast{position:fixed;top:-100px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid var(--glass-border);color:var(--primary);font-weight:600;padding:12px 24px;border-radius:30px;z-index:1000;transition:top 0.4s}
+    #loading{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(255,243,224,0.6);backdrop-filter:blur(8px);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;visibility:hidden;opacity:0;transition:opacity 0.3s}
+    #loading.show{visibility:visible;opacity:1}
+    .spinner{width:50px;height:50px;border:5px solid rgba(245,124,0,0.3);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-text{margin-top:15px;font-weight:600;color:var(--primary)}
+    @media (max-width:600px){.grid-2x1{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="blob orange"></div>
+  <div class="blob peach"></div>
+  <header class="glass" style="border-radius: 0 0 16px 16px; margin-bottom: 1rem;">
+    <h1><i class="ph ph-plant"></i> Prakarya Budi Daya</h1>
+  </header>
+  <main>
+    <div class="top-nav">
+      <a href="index.html" class="btn-back"><i class="ph ph-caret-left"></i> Kembali</a>
+    </div>
+    <div class="page active">
+      <h2 class="page-title">Dokumentasi Proyek Budi Daya</h2>
+      <div class="grid grid-2x1" style="margin-top: 2rem;">
+        <a class="card glass" onclick="handleUpload(event, 'https://script.google.com/macros/s/AKfycbzE1unJZiwNlauxpFsukhFb46Pf97fXjdXupZx9TVtcDri2SAuN28BmKgzPC_dvGigSIQ/exec')">
+          <i class="ph ph-upload-simple"></i>
+          <h3>Siapkan Foto Terbaik dan Upload Dokumentasi Proyek Disini</h3>
+        </a>
+        <a class="card glass" href="contoh.html">
+          <i class="ph ph-images"></i>
+          <h3>Contoh Foto Dokumentasi Proyek Rapi yang Diharapkan untuk Diupload</h3>
+        </a>
+      </div>
+    </div>
+  </main>
+  <footer class="glass" style="border-radius: 16px 16px 0 0; margin-top: 1rem;">
+    <span>&copy; 2026</span>
+    <a href="https://wa.me/6285254135739?text=Selamat%20pagi%20Pak%20Guru,%20saya%20mau%20bertanya%20" target="_blank" onclick="showToast('Membuka WhatsApp...')">
+      Pak Guru Rahmad<i class="ph ph-whatsapp-logo" style="font-size: 1.2rem;"></i>
+    </a>
+  </footer>
+  <div id="toast">Notifikasi</div>
+  <div id="loading"><div class="spinner"></div><div class="loading-text" id="loading-text">Memproses...</div></div>
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.top = '20px';
+      setTimeout(() => { toast.style.top = '-100px'; }, 3000);
+    }
+    function handleUpload(e, url) {
+      e.preventDefault();
+      const loading = document.getElementById('loading');
+      const text = document.getElementById('loading-text');
+      text.innerText = "Menyiapkan form upload...";
+      loading.classList.add('show');
+      setTimeout(() => {
+        loading.classList.remove('show');
+        window.open(url, '_blank');
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

@@ -17,7 +17,10 @@
     .glass{background:var(--glass-bg);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:16px;box-shadow:var(--glass-shadow)}
     header,footer{text-align:center;padding:1.5rem;z-index:10}
     header h1{font-size:1.5rem;font-weight:700;color:var(--primary);display:flex;align-items:center;justify-content:center;gap:8px}
-    main{flex:1;padding:1rem;width:100%;max-width:900px;margin:0 auto;z-index:10}
+    
+    /* Mengubah max-width dari 900px menjadi 1400px agar cukup untuk 3 kolom */
+    main{flex:1;padding:1rem;width:100%;max-width:1400px;margin:0 auto;z-index:10}
+    
     footer{font-size:0.9rem;margin-top:auto;display:flex;justify-content:center;align-items:center;gap:10px}
     footer a{color:#25D366;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:5px}
     .page{animation:fadeIn 0.4s ease-in-out}
@@ -27,6 +30,13 @@
     .btn-back{background:none;border:none;font-size:1.1rem;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:5px;color:var(--primary);font-weight:600;padding:8px 12px;border-radius:8px;text-decoration:none}
     .btn-back:hover{background:var(--glass-bg)}
     #toast{position:fixed;top:-100px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid var(--glass-border);color:var(--primary);font-weight:600;padding:12px 24px;border-radius:30px;z-index:1000;transition:top 0.4s}
+    
+    /* Media Query Responsif: Jika layar kecil, ubah card menjadi menurun ke bawah (1 kolom) */
+    @media (max-width: 992px) {
+      .card-container {
+        grid-template-columns: 1fr !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -41,64 +51,82 @@
     </div>
     <div class="page active">
       <h2 class="page-title">Contoh Dokumentasi yang Diharapkan</h2>
-      <div class="glass" style="margin-top: 2rem; padding: 2rem; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; border-radius: 16px;">
-        <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--text-dark);">Nama : MUHAMMAD ARIADI</p>
-        <p style="font-weight: 700; margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-dark);">Kelas : 9F</p>
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Perencanaan Alat, Bahan, dan Media Tanam</h3>
-        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; justify-content: space-between;">
-          <img src="https://i.imgur.com/oqk42dI.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Alat dan Bahan 1">
-          <img src="https://i.imgur.com/Pop6czd.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Alat dan Bahan 2">
-        </div>
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Masa Tanam Benih/Bibit</h3>
-        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; justify-content: space-between;">
-          <img src="https://i.imgur.com/tayCXEh.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Masa Tanam 1">
-          <img src="https://i.imgur.com/UdPK61o.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Masa Tanam 2">
-        </div>
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Pemantauan Pertumbuhan Pekan ke-1</h3>
-        <div style="display: flex; gap: 1rem; justify-content: space-between;">
-          <img src="https://i.imgur.com/N7a0msZ.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Pemantauan 1">
-          <img src="https://i.imgur.com/ioYQxAR.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Pemantauan 2">
-        </div>
-      </div>
       
-      <div class="glass" style="margin-top: 2rem; padding: 2rem; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; border-radius: 16px;">
-        <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--text-dark);">Nama : ASAHRA KASIH AQUINA</p>
-        <p style="font-weight: 700; margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-dark);">Kelas : 9H</p>
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Perencanaan Alat, Bahan, dan Media Tanam</h3>
-        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; justify-content: space-between;">
-          <img src="https://i.imgur.com/iTGGaka.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Alat dan Bahan 1">
-          <img src="https://i.imgur.com/az4bbGG.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Alat dan Bahan 2">
+      <!-- Kontainer 3x1 -->
+      <div class="card-container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; width: 100%;">
+        
+        <!-- CARD 1 -->
+        <div class="glass" style="padding: 1.5rem; text-align: left; border-radius: 16px;">
+          <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--text-dark);">Nama : MUHAMMAD ARIADI</p>
+          <p style="font-weight: 700; margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-dark);">Kelas : 9F</p>
+          
+          <h3 style="margin-bottom: 1rem; color: var(--primary);">Perencanaan Alat, Bahan, dan Media Tanam</h3>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 2.5rem; justify-content: space-between;">
+            <img src="https://i.imgur.com/oqk42dI.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Alat dan Bahan 1">
+            <img src="https://i.imgur.com/Pop6czd.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Alat dan Bahan 2">
+          </div>
+          
+          <h3 style="margin-bottom: 1rem; color: var(--primary);">Masa Tanam Benih/Bibit</h3>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 2.5rem; justify-content: space-between;">
+            <img src="https://i.imgur.com/tayCXEh.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Masa Tanam 1">
+            <img src="https://i.imgur.com/UdPK61o.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Masa Tanam 2">
+          </div>
+          
+          <h3 style="margin-bottom: 1rem; color: var(--primary);">Pemantauan Pertumbuhan Pekan ke-1</h3>
+          <div style="display: flex; gap: 0.5rem; justify-content: space-between;">
+            <img src="https://i.imgur.com/N7a0msZ.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Pemantauan 1">
+            <img src="https://i.imgur.com/ioYQxAR.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Pemantauan 2">
+          </div>
         </div>
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Masa Tanam Benih/Bibit</h3>
-        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; justify-content: space-between;">
-          <img src="https://i.imgur.com/umN49IY.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Masa Tanam 1">
-          <img src="https://i.imgur.com/pa4KSM4.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Masa Tanam 2">
+        
+        <!-- CARD 2 -->
+        <div class="glass" style="padding: 1.5rem; text-align: left; border-radius: 16px;">
+          <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--text-dark);">Nama : ASAHRA KASIH AQUINA</p>
+          <p style="font-weight: 700; margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-dark);">Kelas : 9H</p>
+          
+          <h3 style="margin-bottom: 1rem; color: var(--primary);">Perencanaan Alat, Bahan, dan Media Tanam</h3>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 2.5rem; justify-content: space-between;">
+            <img src="https://i.imgur.com/iTGGaka.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Alat dan Bahan 1">
+            <img src="https://i.imgur.com/az4bbGG.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Alat dan Bahan 2">
+          </div>
+          
+          <h3 style="margin-bottom: 1rem; color: var(--primary);">Masa Tanam Benih/Bibit</h3>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 2.5rem; justify-content: space-between;">
+            <img src="https://i.imgur.com/umN49IY.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Masa Tanam 1">
+            <img src="https://i.imgur.com/pa4KSM4.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Masa Tanam 2">
+          </div>
+          
+          <h3 style="margin-bottom: 1rem; color: var(--primary);">Pemantauan Pertumbuhan Pekan ke-1</h3>
+          <div style="display: flex; gap: 0.5rem; justify-content: space-between;">
+            <img src="https://i.imgur.com/8dJJAA8.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Pemantauan 1">
+            <img src="https://i.imgur.com/nCylpVD.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Pemantauan 2">
+          </div>
         </div>
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Pemantauan Pertumbuhan Pekan ke-1</h3>
-        <div style="display: flex; gap: 1rem; justify-content: space-between;">
-          <img src="https://i.imgur.com/8dJJAA8.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Pemantauan 1">
-          <img src="https://i.imgur.com/nCylpVD.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Pemantauan 2">
+        
+        <!-- CARD 3 -->
+        <div class="glass" style="padding: 1.5rem; text-align: left; border-radius: 16px;">
+          <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--text-dark);">Nama : RAHMI AULIA LESSY</p>
+          <p style="font-weight: 700; margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-dark);">Kelas : 9I</p>
+          
+          <h3 style="margin-bottom: 1rem; color: var(--primary);">Perencanaan Alat, Bahan, dan Media Tanam</h3>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 2.5rem; justify-content: space-between;">
+            <img src="https://i.imgur.com/nZDHOPj.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Alat dan Bahan 1">
+            <img src="https://i.imgur.com/ridpFfe.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Alat dan Bahan 2">
+          </div>
+          
+          <h3 style="margin-bottom: 1rem; color: var(--primary);">Masa Tanam Benih/Bibit</h3>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 2.5rem; justify-content: space-between;">
+            <img src="https://i.imgur.com/QUV8guU.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Alat dan Bahan 1">
+            <img src="https://i.imgur.com/2UoqjeZ.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Alat dan Bahan 2">
+          </div>
+          
+          <h3 style="margin-bottom: 1rem; color: var(--primary);">Pemantauan Pertumbuhan Pekan ke-1</h3>
+          <div style="display: flex; gap: 0.5rem; justify-content: space-between;">
+            <img src="https://i.imgur.com/z9cewKa.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Masa Tanam 1">
+            <img src="https://i.imgur.com/aFfKzF7.jpeg" style="width: calc(50% - 0.25rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none;" draggable="false" alt="Masa Tanam 2">
+          </div>
         </div>
-      </div>
-      
-      <div class="glass" style="margin-top: 2rem; padding: 2rem; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; border-radius: 16px;">
-        <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--text-dark);">Nama : RAHMI AULIA LESSY</p>
-        <p style="font-weight: 700; margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-dark);">Kelas : 9I</p>
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Perencanaan Alat, Bahan, dan Media Tanam</h3>
-        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; justify-content: space-between;">
-          <img src="https://i.imgur.com/nZDHOPj.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Alat dan Bahan 1">
-          <img src="https://i.imgur.com/ridpFfe.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Alat dan Bahan 2">
-        </div>
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Masa Tanam Benih/Bibit</h3>
-        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; justify-content: space-between;">
-          <img src="https://i.imgur.com/QUV8guU.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Alat dan Bahan 1">
-          <img src="https://i.imgur.com/2UoqjeZ.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Alat dan Bahan 2">
-        </div>
-        <h3 style="margin-bottom: 1rem; color: var(--primary);">Pemantauan Pertumbuhan Pekan ke-1</h3>
-        <div style="display: flex; gap: 1rem; justify-content: space-between;">
-          <img src="https://i.imgur.com/z9cewKa.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Masa Tanam 1">
-          <img src="https://i.imgur.com/aFfKzF7.jpeg" style="width: calc(50% - 0.5rem); border-radius: 12px; object-fit: cover; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); pointer-events: none; user-select: none; -webkit-user-drag: none;" draggable="false" oncontextmenu="return false;" alt="Masa Tanam 2">
-        </div>
+        
       </div>
     </div>
   </main>

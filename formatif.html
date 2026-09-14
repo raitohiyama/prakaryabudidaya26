@@ -59,10 +59,11 @@
           <i class="ph ph-spade"></i>
           <h3>Tugas 2 – Persiapan Proyek Budi Daya</h3>
         </a>
-        <div class="card glass disabled">
-          <i class="ph ph-lock-key"></i>
-          <h3>Tugas 3 (Soon)</h3>
-        </div>
+        <!-- TUGAS 3 AKTIF -->
+        <a class="card glass" onclick="openLink(event, 'labirin.html')">
+          <i class="ph ph-game-controller"></i>
+          <h3>Tugas 3 – Game Labirin Prakarya Budi Daya</h3>
+        </a>
       </div>
     </div>
   </main>
@@ -83,7 +84,14 @@
     function openLink(e, url) {
       e.preventDefault();
       showToast('Membuka tautan...');
-      setTimeout(() => { window.open(url, '_blank'); }, 800);
+      setTimeout(() => { 
+        // Jika membuka game labirin, buka di tab/jendela yang sama agar lebih smooth
+        if (url === 'labirin.html') {
+          window.location.href = url;
+        } else {
+          window.open(url, '_blank'); 
+        }
+      }, 800);
     }
   </script>
 </body>

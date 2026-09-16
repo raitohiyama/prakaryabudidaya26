@@ -249,7 +249,7 @@
 
         window.onload = () => {
             document.getElementById('loading-text').innerText = "Mengambil soal...";
-            if (API_URL !== 'https://script.google.com/macros/s/AKfycbzYfT2KyvpoW_NDWOBeXY8qVmdyHS2NXnRpEbnwc-wU4ISKGsNkn_M4XyAyEcwDpEDl/exec' && API_URL !== '') {
+            if (API_URL !== 'MASUKKAN_URL_WEB_APP_GAS_DI_SINI' && API_URL !== '') {
                 fetch(API_URL + "?action=getQuestions")
                     .then(response => response.json())
                     .then(res => {
@@ -793,7 +793,7 @@
             document.getElementById('game-over-screen').classList.remove('hidden');
             
             let info = { nama: document.getElementById('nama').value, kelas: selectedClass, mode: selectedMode, score: score, answers: playerAnswers };
-            if(API_URL !== 'https://script.google.com/macros/s/AKfycbzYfT2KyvpoW_NDWOBeXY8qVmdyHS2NXnRpEbnwc-wU4ISKGsNkn_M4XyAyEcwDpEDl/exec' && API_URL !== '') {
+            if(API_URL !== 'MASUKKAN_URL_WEB_APP_GAS_DI_SINI' && API_URL !== '') {
                 // Gunakan no-cors untuk bypass CORS restriction di GitHub Pages
                 fetch(API_URL, {
                     method: 'POST',

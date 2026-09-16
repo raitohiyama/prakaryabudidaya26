@@ -241,26 +241,24 @@
         function playWrong() { playTone(250, 'sawtooth', 0.3); setTimeout(()=>playTone(200, 'sawtooth', 0.4), 150); }
         function playPowerup() { playTone(600, 'triangle', 0.1); setTimeout(()=>playTone(800, 'triangle', 0.2), 100); }
 
-        let mockData = [
-            { q: "Apa ibukota Indonesia?", opts: ["Jakarta", "Bandung", "Surabaya", "Medan"], key: "Jakarta", score: 10 },
-            { q: "2 + 2 = ?", opts: ["3", "4", "5", "6"], key: "4", score: 10 },
-            { q: "Warna bendera Indonesia?", opts: ["Merah Putih", "Biru Putih", "Hitam Putih", "Kuning"], key: "Merah Putih", score: 10 }
-        ];
-
         window.onload = () => {
             document.getElementById('loading-text').innerText = "Mengambil soal...";
-            if (API_URL !== 'MASUKKAN_URL_WEB_APP_GAS_DI_SINI' && API_URL !== '') {
+            if (API_URL !== 'https://script.google.com/macros/s/AKfycbzYfT2KyvpoW_NDWOBeXY8qVmdyHS2NXnRpEbnwc-wU4ISKGsNkn_M4XyAyEcwDpEDl/exec' && API_URL !== '') {
                 fetch(API_URL + "?action=getQuestions")
                     .then(response => response.json())
                     .then(res => {
-                        if(res && res.length > 0) questions = res; else questions = mockData;
-                        document.getElementById('loading-text').innerText = "Siap dimainkan!";
+                        if(res && res.length > 0) {
+                            questions = res;
+                            document.getElementById('loading-text').innerText = "Siap dimainkan!";
+                        } else {
+                            document.getElementById('loading-text').innerText = "Gagal mengambil soal. Data kosong.";
+                        }
                     })
                     .catch(err => {
-                        questions = mockData; document.getElementById('loading-text').innerText = "Gagal terhubung, Mode Offline Aktif";
+                        document.getElementById('loading-text').innerText = "Gagal terhubung ke server.";
                     });
             } else {
-                questions = mockData; document.getElementById('loading-text').innerText = "API URL belum diisi. Mode Offline Aktif.";
+                document.getElementById('loading-text').innerText = "API URL belum diisi.";
             }
         };
 
@@ -377,6 +375,11 @@
         }
 
         function initGame() {
+            if (questions.length === 0) {
+                showToast("⚠️ Menunggu soal dari server...");
+                return;
+            }
+
             let nama = document.getElementById('nama').value.trim();
             if(!nama) { showToast("⚠️ Isi Nama Anda terlebih dahulu!"); return; }
             if(!selectedClass) { showToast("⚠️ Pilih Kelas terlebih dahulu!"); return; }
@@ -546,12 +549,11 @@
                     playWrong();
                     lives--; updateUI();
                     if(lives <= 0) {
-                        playerAnswers.push(chosenText); // Only save wrong answer if game over in Mode 2
+                        playerAnswers.push(chosenText); 
                         triggerFeedback(false, () => {
                             forceGameOver("Kehabisan Nyawa!");
                         });
                     } else {
-                        // Do NOT save chosenText if they still have lives
                         triggerFeedback(false, () => {
                             resetPositions();
                         });
@@ -585,7 +587,6 @@
         }
 
         function teleportToOption(opt) {
-            // Target coordinates adjusted to front of room rather than inside it
             let targets = {
                 'A': {c:3, r:1}, 'B': {c:11, r:1},
                 'C': {c:3, r:17}, 'D': {c:11, r:17} 
@@ -702,7 +703,6 @@
                         ent.dir = {x:-ent.dir.x, y:-ent.dir.y};
                     } else {
                         if (ent.type === 3) {
-                            // Helpers prefer going straight if possible
                             let forward = possible.find(p => p.x === ent.dir.x && p.y === ent.dir.y);
                             if (forward && Math.random() < 0.75) {
                                 ent.dir = forward;
@@ -793,8 +793,7 @@
             document.getElementById('game-over-screen').classList.remove('hidden');
             
             let info = { nama: document.getElementById('nama').value, kelas: selectedClass, mode: selectedMode, score: score, answers: playerAnswers };
-            if(API_URL !== 'MASUKKAN_URL_WEB_APP_GAS_DI_SINI' && API_URL !== '') {
-                // Gunakan no-cors untuk bypass CORS restriction di GitHub Pages
+            if(API_URL !== 'https://script.google.com/macros/s/AKfycbzYfT2KyvpoW_NDWOBeXY8qVmdyHS2NXnRpEbnwc-wU4ISKGsNkn_M4XyAyEcwDpEDl/exec' && API_URL !== '') {
                 fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },

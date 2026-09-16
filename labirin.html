@@ -243,7 +243,7 @@
 
         window.onload = () => {
             document.getElementById('loading-text').innerText = "Mengambil soal...";
-            if (API_URL !== 'https://script.google.com/macros/s/AKfycbzYfT2KyvpoW_NDWOBeXY8qVmdyHS2NXnRpEbnwc-wU4ISKGsNkn_M4XyAyEcwDpEDl/exec' && API_URL !== '') {
+            if (API_URL !== 'https://script.google.com/macros/s/AKfycbzYfT2KyvpoW_NDWOBeXY8qVmdyHS2NXnRpEbnwc-wU4ISKGsNkn_M4XyAyEcwDpEDl/exec' && API_URL !== 'https://script.google.com/macros/s/AKfycbzYfT2KyvpoW_NDWOBeXY8qVmdyHS2NXnRpEbnwc-wU4ISKGsNkn_M4XyAyEcwDpEDl/exec') {
                 fetch(API_URL + "?action=getQuestions")
                     .then(response => response.json())
                     .then(res => {

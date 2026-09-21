@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sumatif Prakarya Budidaya 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    
+    /* Anti-Copy / Anti-Select */
+    * { 
+      box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0;
+      -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+    }
+    input { -webkit-user-select: auto; -moz-user-select: auto; -ms-user-select: auto; user-select: auto; }
+
+    body {
+      background: linear-gradient(135deg, #e63946, #1d3557);
+      background-attachment: fixed; background-size: cover;
+      color: #fff; min-height: 100vh; display: flex; flex-direction: column;
+      transition: filter 0.2s ease;
+    }
+    
+    body.blur-mode {
+      filter: blur(15px) grayscale(100%);
+      pointer-events: none;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    }
+    .glass-box { border-radius: 15px; padding: 25px; margin: 15px; }
+    
+    header, footer {
+      text-align: center; padding: 15px; font-weight: 600; letter-spacing: 1px;
+      z-index: 10;
+    }
+    main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; width: 100%; max-width: 800px; margin: 0 auto;}
+    
+    /* Dynamic Toasts */
+    #toast {
+      position: fixed; top: 0; left: 50%;
+      transform: translate(-50%, -150%);
+      opacity: 0; visibility: hidden; pointer-events: none;
+      padding: 15px 25px; border-radius: 30px; font-weight: bold;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 9999; text-align: center; border: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(20px);
+    }
+    #toast.show { 
+      transform: translate(-50%, 20px);
+      opacity: 1; visibility: visible; pointer-events: auto;
+    }
+    
+    /* Type Colors for Toasts */
+    #toast.success { background: rgba(46, 204, 113, 0.85); border-color: #2ecc71; color: #fff; }
+    #toast.error   { background: rgba(231, 76, 60, 0.85); border-color: #e74c3c; color: #fff; }
+    #toast.warning { background: rgba(243, 156, 18, 0.85); border-color: #f39c12; color: #fff; }
+    #toast.info    { background: rgba(52, 152, 219, 0.85); border-color: #3498db; color: #fff; }
+    
+    #loader {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; z-index: 10000; flex-direction: column;
+    }
+    .spinner {
+      width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3);
+      border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.2); color: #fff; border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;
+      transition: all 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn:hover { background: rgba(255, 255, 255, 0.4); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-red-soft { background: rgba(230, 57, 70, 0.7); border-color: #e63946; }
+    .btn-red-soft:hover { background: rgba(230, 57, 70, 0.9); }
+    .btn-blue-soft { background: rgba(69, 123, 157, 0.7); border-color: #457b9d; }
+    .btn-blue-soft:hover { background: rgba(69, 123, 157, 0.9); }
+    .btn-blue-dark { background: rgba(29, 53, 87, 0.8); border-color: #1d3557; }
+    .btn-blue-dark:hover { background: rgba(29, 53, 87, 1); }
+    
+    .input-group { position: relative; margin-bottom: 15px; width: 100%; }
+    .input-group input {
+      width: 100%; padding: 12px 40px 12px 15px; border-radius: 8px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
+      color: #fff; outline: none; transition: 0.3s;
+    }
+    .input-group input::placeholder { color: rgba(255,255,255,0.7); }
+    .input-group input:focus { background: rgba(255,255,255,0.2); border-color: #fff; }
+    
+    /* Hack untuk menyamarkan input teks sebagai password */
+    .masked-pass {
+      -webkit-text-security: disc;
+    }
+
+    .icon-btn {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: #fff; cursor: pointer; display: flex;
+    }
+
+    .modal-overlay {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+      display: none; justify-content: center; align-items: center; z-index: 1000;
+    }
+    .modal-content {
+      width: 90%; max-width: 450px; position: relative; overflow: hidden;
+    }
+    .close-btn { position: absolute; right: 15px; top: 15px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; z-index: 5;}
+    .tab-header { display: flex; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; margin-top: 10px; }
+    .tab-btn { flex: 1; text-align: center; padding: 10px; cursor: pointer; font-weight: bold; border-bottom: 3px solid transparent; opacity: 0.6; transition: 0.3s; }
+    .tab-btn.active { opacity: 1; border-bottom: 3px solid #fff; }
+    .tab-body { display: none; }
+    .tab-body.active { display: block; }
+    
+    .class-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+    .class-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.3s; text-align: center;}
+    .class-btn.selected { background: rgba(255,255,255,0.5); font-weight: bold; }
+    
+    .page { display: none; width: 100%; }
+    .page.active { display: block; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .home-content { text-align: center; }
+    .logo { width: 120px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+    .home-content h2 { margin-bottom: 10px; }
+    .home-content p { margin-bottom: 25px; opacity: 0.9; }
+    
+    .q-header { 
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px;
+    }
+    .timer-badge {
+      background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 20px;
+      font-family: monospace; font-size: 1.1em; letter-spacing: 1px; font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .q-text { font-size: 1.1em; margin-bottom: 20px; line-height: 1.5; }
+    
+    .option-box {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
+      padding: 15px; border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: 0.3s;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .option-box:hover { background: rgba(255,255,255,0.2); }
+    .option-box.selected { 
+      background: rgba(46, 204, 113, 0.7); 
+      border-color: #2ecc71; 
+      font-weight: 600; 
+      transform: scale(1.02);
+      box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+    }
+    .opt-label { font-weight: bold; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 5px; transition: 0.3s; }
+    .option-box.selected .opt-label { background: #fff; color: #2ecc71; }
+    
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 25px; gap: 15px; }
+    
+    #finish-modal .modal-content { text-align: center; padding: 40px 20px; }
+    .score-display { font-size: 3em; font-weight: bold; margin: 20px 0; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+
+    .info-text {
+      font-style: italic; font-size: 0.85em; margin-bottom: 12px; text-align: center; opacity: 0.9; line-height: 1.4;
+    }
+
+    svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+
+  <!-- Toast -->
+  <div id="toast" class="info">Notifikasi</div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <div style="margin-top: 15px; font-weight: bold;">Memproses Data...</div>
+  </div>
+
+  <header class="glass">Sumatif Prakarya Budidaya 2026</header>
+
+  <main>
+    <!-- PAGE 1: HOME -->
+    <div id="page-home" class="page active">
+      <div class="glass glass-box home-content">
+        <img src="https://i.imgur.com/hQVEGNU.png" alt="Logo" class="logo">
+        <h2>Web Sumatif Prakarya Budidaya 2026</h2>
+        <p>Selamat Datang di Web Khusus Asesmen Sumatif.<br>Persiapkan Diri Sebelum Masuk Mengerjakan Tes.</p>
+        <button class="btn" onclick="openModal('auth-modal')">
+          <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+          Siap dan Masuk
+        </button>
+      </div>
+    </div>
+
+    <!-- PAGE 2: TEST -->
+    <div id="page-test" class="page">
+      <div class="glass glass-box">
+        <div class="q-header">
+          <div>
+            <div id="q-num">Soal 1 dari 10</div>
+            <div id="q-user" style="font-size:0.8em; opacity:0.8;">Nama Siswa</div>
+          </div>
+          <div id="timer-display" class="timer-badge">02:00</div>
+        </div>
+        <div class="q-text" id="q-text">Pertanyaan akan muncul di sini...</div>
+        
+        <div id="options-container"></div>
+        
+        <div class="nav-buttons">
+          <button class="btn" id="btn-prev" onclick="prevSoal()" style="display: none;">Previous</button>
+          <button class="btn" id="btn-next" onclick="nextSoal()" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="glass">@2026 Prakarya</footer>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="glass modal-content glass-box">
+      <button class="close-btn" onclick="closeModal('auth-modal')">&times;</button>
+      
+      <div class="tab-header">
+        <div class="tab-btn active" onclick="switchTab('tab-register')">Buat Akun</div>
+        <div class="tab-btn" onclick="switchTab('tab-login')">Login Tes</div>
+      </div>
+
+      <!-- Buat Akun -->
+      <div class="tab-body active" id="tab-register">
+        <label style="font-size: 0.9em; margin-bottom: 5px; display: block;">Pilih Kelas</label>
+        <div class="class-grid" id="class-grid">
+          <div class="class-btn" onclick="selectClass('9C')">9C</div>
+          <div class="class-btn" onclick="selectClass('9D')">9D</div>
+          <div class="class-btn" onclick="selectClass('9E')">9E</div>
+          <div class="class-btn" onclick="selectClass('9F')">9F</div>
+          <div class="class-btn" onclick="selectClass('9G')">9G</div>
+          <div class="class-btn" onclick="selectClass('9H')">9H</div>
+          <div class="class-btn" onclick="selectClass('9I')">9I</div>
+          <div class="class-btn" onclick="selectClass('9J')">9J</div>
+        </div>
+        <div class="input-group">
+          <input type="text" id="reg-nama" placeholder="Nama Lengkap">
+        </div>
+        <div class="input-group">
+          <input type="text" id="reg-user" placeholder="Username (6-10 karakter)" minlength="6" maxlength="10">
+        </div>
+        <div class="input-group">
+          <input type="text" id="reg-pass" class="masked-pass" placeholder="Password (6-10 karakter)" minlength="6" maxlength="10" autocomplete="off">
+          <button class="icon-btn" onclick="togglePass('reg-pass', this)">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+        
+        <p class="info-text">Isi identitas lalu buat username dan password Anda sendiri. Jangan lupa dicatat untuk akses login.</p>
+        <button class="btn btn-blue-soft" onclick="doRegister()">Buat Akun Baru</button>
+      </div>
+
+      <!-- Login Tes -->
+      <div class="tab-body" id="tab-login">
+        <div class="input-group">
+          <input type="text" id="log-user" placeholder="Username">
+        </div>
+        <div class="input-group">
+          <input type="text" id="log-pass" class="masked-pass" placeholder="Password" autocomplete="off">
+          <button class="icon-btn" onclick="togglePass('log-pass', this)">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+        
+        <p class="info-text">Silakan login dengan akun username dan password yang sudah Anda buat sebelumnya.</p>
+        <button class="btn btn-blue-dark" onclick="doLogin()">Login Mulai Tes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Finish Modal -->
+  <div class="modal-overlay" id="finish-modal">
+    <div class="glass modal-content glass-box">
+      <h3 style="margin-bottom:10px;">Tes Selesai</h3>
+      <p>Terima Kasih Sudah Mengerjakan Tes Hari Ini.<br>Semoga Nilainya Memuaskan.</p>
+      <div class="score-display" id="final-score">100</div>
+      <button class="btn" onclick="resetApp()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // CONFIGURATION: GANTI URL DI BAWAH INI !!!
+    // ==========================================
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyypLeva6cAy2cS9gR6qlKHcTREapCAzIjH1zVENeILEJ2f8fH-9t5KmImyhDUhIXOH3w/exec";
+
+    // State
+    let selectedClass = '';
+    let currentUser = null;
+    let originalSoalList = []; 
+    let soalList = []; 
+    let currentSoalIndex = 0;
+    let userAnswers = []; 
+    let inTest = false;
+    let cheatToastTimer = null;
+    let questionTimerInterval = null;
+    let timeLeft = 120; // 2 Menit
+
+    const showToast = (msg, type = 'info', isItalic = false, persistent = false) => {
+      const el = document.getElementById('toast');
+      el.innerHTML = isItalic ? `<i>${msg}</i>` : msg;
+      el.className = `show ${type}`; 
+      
+      if(cheatToastTimer) {
+        clearTimeout(cheatToastTimer);
+        cheatToastTimer = null;
+      }
+      
+      if(!persistent) {
+        setTimeout(() => el.classList.remove('show'), 3500);
+      }
+    };
+
+    const hideToast = () => {
+      document.getElementById('toast').classList.remove('show');
+    };
+
+    const showLoader = (show) => document.getElementById('loader').style.display = show ? 'flex' : 'none';
+    const openModal = (id) => document.getElementById(id).style.display = 'flex';
+    const closeModal = (id) => document.getElementById(id).style.display = 'none';
+    
+    const switchTab = (tabId) => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-body').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    };
+
+    const selectClass = (cls) => {
+      selectedClass = cls;
+      document.querySelectorAll('.class-btn').forEach(b => b.classList.remove('selected'));
+      event.target.classList.add('selected');
+    };
+
+    const togglePass = (id, btnElement) => {
+      const el = document.getElementById(id);
+      if(el.classList.contains('masked-pass')) {
+        el.classList.remove('masked-pass');
+        btnElement.innerHTML = `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+      } else {
+        el.classList.add('masked-pass');
+        btnElement.innerHTML = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+      }
+    };
+
+    // Fungsi Fetch API ke Google Apps Script Backend
+    const runGAS = async (action, ...args) => {
+      if (GAS_URL === "MASUKKAN_URL_WEB_APP_GAS_ANDA_DISINI" || GAS_URL.trim() === "") {
+        throw new Error("URL Web App GAS belum dikonfigurasi di file HTML! Buka file HTML dan isi GAS_URL.");
+      }
+
+      let payload = { action: action };
+      
+      if (action === 'registerUser') {
+        payload.kelas = args[0]; payload.nama = args[1]; payload.username = args[2]; payload.password = args[3];
+      } else if (action === 'loginUser') {
+        payload.username = args[0]; payload.password = args[1];
+      } else if (action === 'submitJawaban') {
+        payload.kelas = args[0]; payload.nama = args[1]; payload.answers = args[2]; payload.totalScore = args[3];
+      }
+
+      try {
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8' // Menghindari request OPTIONS (CORS preflight) dari browser
+          }
+        });
+        const result = await response.json();
+        return result;
+      } catch (error) {
+        throw new Error("Gagal terhubung ke Server. Pastikan koneksi internet stabil.");
+      }
+    };
+
+    const doRegister = async () => {
+      const nama = document.getElementById('reg-nama').value;
+      const user = document.getElementById('reg-user').value.trim();
+      const pass = document.getElementById('reg-pass').value;
+      
+      if(!selectedClass || !nama || !user || !pass) {
+        return showToast("Harap isi semua data dengan lengkap!", "warning");
+      }
+      if(user.length < 6 || user.length > 10) {
+        return showToast("Username harus terdiri dari 6 hingga 10 karakter!", "warning");
+      }
+      if(pass.length < 6 || pass.length > 10) {
+        return showToast("Password harus terdiri dari 6 hingga 10 karakter!", "warning");
+      }
+      
+      showLoader(true);
+      try {
+        const res = await runGAS('registerUser', selectedClass, nama, user, pass);
+        showToast(res.msg, res.status ? 'success' : 'error');
+        if(res.status) {
+          document.getElementById('reg-nama').value = '';
+          document.getElementById('reg-user').value = '';
+          document.getElementById('reg-pass').value = '';
+          document.querySelectorAll('.tab-btn')[1].click(); 
+        }
+      } catch(e) { showToast("Error: " + e.message, "error"); }
+      showLoader(false);
+    };
+
+    const doLogin = async () => {
+      const user = document.getElementById('log-user').value.trim();
+      const pass = document.getElementById('log-pass').value;
+      if(!user || !pass) return showToast("Isi Username dan Password!", "warning");
+      
+      showLoader(true);
+      try {
+        const res = await runGAS('loginUser', user, pass);
+        if(res.status) {
+          showToast(res.msg, 'success');
+          currentUser = res.user;
+          document.getElementById('q-user').innerText = currentUser.nama + " (" + currentUser.kelas + ")";
+          await loadSoal();
+        } else {
+          showToast(res.msg, 'error');
+        }
+      } catch(e) { showToast("Error: " + e.message, "error"); }
+      showLoader(false);
+    };
+
+    const updateTimerUI = () => {
+      const el = document.getElementById('timer-display');
+      if(!el) return;
+      const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+      const s = String(timeLeft % 60).padStart(2, '0');
+      el.innerText = `${m}:${s}`;
+      
+      if(timeLeft <= 10) el.style.color = "#ff4d4d";
+      else el.style.color = "#fff";
+    };
+
+    const startTimer = () => {
+      if(questionTimerInterval) clearInterval(questionTimerInterval);
+      timeLeft = 120; // Set 2 menit
+      updateTimerUI();
+      
+      questionTimerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerUI();
+        if(timeLeft <= 0) {
+          clearInterval(questionTimerInterval);
+          showToast("Waktu soal habis! Lanjut otomatis.", "warning", true);
+          nextSoal();
+        }
+      }, 1000);
+    };
+
+    const loadSoal = async () => {
+      try {
+        const res = await runGAS('getSoal');
+        if(res.status && res.data && res.data.length > 0) {
+          originalSoalList = [...res.data];
+          soalList = res.data.map((s, i) => ({...s, originalIndex: i}));
+          for (let i = soalList.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [soalList[i], soalList[j]] = [soalList[j], soalList[i]];
+          }
+
+          currentSoalIndex = 0;
+          userAnswers = new Array(originalSoalList.length).fill(null);
+          closeModal('auth-modal');
+          startTest();
+        } else {
+          showToast(res.msg || "Soal tidak tersedia.", "error");
+        }
+      } catch(e) { showToast("Error: " + e.message, "error"); }
+    };
+
+    const startTest = () => {
+      document.getElementById('page-home').classList.remove('active');
+      document.getElementById('page-test').classList.add('active');
+      inTest = true;
+      history.pushState({page: 'test'}, "Test", "#test");
+      renderSoal();
+    };
+
+    const renderSoal = () => {
+      startTimer(); 
+
+      const s = soalList[currentSoalIndex];
+      document.getElementById('q-num').innerText = `Soal ${currentSoalIndex + 1} dari ${soalList.length}`;
+      document.getElementById('q-text').innerText = s.pertanyaan;
+      
+      if (!s.shuffledOptions) {
+        let opts = [
+          { text: s.optA, origLabel: 'A' },
+          { text: s.optB, origLabel: 'B' },
+          { text: s.optC, origLabel: 'C' },
+          { text: s.optD, origLabel: 'D' }
+        ];
+        for (let i = opts.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+        s.shuffledOptions = opts;
+      }
+
+      const displayLabels = ['A', 'B', 'C', 'D'];
+      let html = '';
+      
+      s.shuffledOptions.forEach((opt, idx) => {
+        const isSelected = userAnswers[s.originalIndex] === opt.origLabel ? 'selected' : '';
+        html += `<div class="option-box ${isSelected}" onclick="pilihJawaban(${s.originalIndex}, '${opt.origLabel}')">
+                  <span class="opt-label">${displayLabels[idx]}</span>
+                  <div style="flex:1">${opt.text}</div>
+                 </div>`;
+      });
+      document.getElementById('options-container').innerHTML = html;
+      
+      document.getElementById('btn-prev').style.display = currentSoalIndex > 0 ? 'flex' : 'none';
+      const btnNext = document.getElementById('btn-next');
+      
+      btnNext.disabled = !userAnswers[s.originalIndex];
+      btnNext.innerText = currentSoalIndex === soalList.length - 1 ? "Kumpul Jawaban" : "Next";
+    };
+
+    window.pilihJawaban = (origIdx, origLabel) => {
+      userAnswers[origIdx] = origLabel; 
+      renderSoal();
+    };
+
+    window.prevSoal = () => {
+      if(currentSoalIndex > 0) { currentSoalIndex--; renderSoal(); }
+    };
+
+    window.nextSoal = async () => {
+      if(currentSoalIndex === soalList.length - 1) {
+        await kirimJawaban();
+      } else {
+        currentSoalIndex++; renderSoal();
+      }
+    };
+
+    const kirimJawaban = async () => {
+      if(questionTimerInterval) clearInterval(questionTimerInterval);
+      showLoader(true);
+      
+      let totalScore = 0;
+      let finalAnswers = [];
+      
+      for(let i=0; i < originalSoalList.length; i++) {
+        const ans = userAnswers[i] || ''; 
+        finalAnswers.push(ans);
+        if(ans && ans.toUpperCase() === originalSoalList[i].kunci) {
+          totalScore += parseInt(originalSoalList[i].skor) || 0;
+        }
+      }
+      
+      try {
+        const res = await runGAS('submitJawaban', currentUser.kelas, currentUser.nama, finalAnswers, totalScore);
+        if(res.status) {
+          inTest = false;
+          document.getElementById('final-score').innerText = totalScore;
+          openModal('finish-modal');
+        } else {
+          showToast("Gagal mengirim: " + res.msg, "error");
+          startTimer(); 
+        }
+      } catch(e) { 
+        showToast("Error: " + e.message, "error"); 
+        startTimer(); 
+      }
+      showLoader(false);
+    };
+
+    const kembaliKeHome = () => {
+      inTest = false;
+      userAnswers = [];
+      currentUser = null;
+      currentSoalIndex = 0;
+      if(questionTimerInterval) clearInterval(questionTimerInterval);
+      
+      document.getElementById('log-user').value = '';
+      document.getElementById('log-pass').value = '';
+      document.getElementById('page-test').classList.remove('active');
+      document.getElementById('page-home').classList.add('active');
+      closeModal('finish-modal');
+      closeModal('auth-modal');
+    };
+
+    const executeCheatPenalty = () => {
+      if (inTest) {
+        kembaliKeHome();
+        showToast("Sistem mendeteksi aktivitas mencurigakan/perpindahan tab. Ujian otomatis direset!", "error", true, true);
+      }
+    };
+
+    const handleReturn = () => {
+      if (document.getElementById('toast').classList.contains('show') && !inTest) {
+         if (cheatToastTimer) clearTimeout(cheatToastTimer);
+         cheatToastTimer = setTimeout(() => {
+             hideToast();
+         }, 5000);
+      }
+    };
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        document.body.classList.add('blur-mode');
+        executeCheatPenalty();
+      } else {
+        document.body.classList.remove('blur-mode');
+        handleReturn();
+      }
+    });
+    
+    window.addEventListener("blur", () => {
+      document.body.classList.add('blur-mode');
+      executeCheatPenalty();
+    });
+    
+    window.addEventListener("focus", () => {
+      document.body.classList.remove('blur-mode');
+      handleReturn();
+    });
+    
+    window.addEventListener('popstate', (e) => {
+      if (inTest) {
+        executeCheatPenalty();
+        handleReturn();
+      }
+    });
+
+    // Keyboard Bindings
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        const authModal = document.getElementById('auth-modal');
+        const finishModal = document.getElementById('finish-modal');
+        if (authModal.style.display === 'flex') {
+          closeModal('auth-modal');
+          return;
+        }
+        if (finishModal.style.display === 'flex') {
+          resetApp();
+          return;
+        }
+        if (inTest) {
+          kembaliKeHome();
+          showToast("Anda terkeluar dari ujian (ESC ditekan). Jawaban direset.", "error", true, false);
+          return;
+        }
+      }
+
+      if (inTest && document.activeElement.tagName !== 'INPUT') {
+        const s = soalList[currentSoalIndex];
+        if (!s || !s.shuffledOptions) return;
+
+        const key = e.key.toUpperCase();
+        if (['A', 'B', 'C', 'D'].includes(key)) {
+          const visualIndex = key.charCodeAt(0) - 65;
+          if (visualIndex < s.shuffledOptions.length) {
+            const opt = s.shuffledOptions[visualIndex];
+            pilihJawaban(s.originalIndex, opt.origLabel);
+          }
+        }
+
+        if (e.key === "ArrowLeft") {
+          if (currentSoalIndex > 0) prevSoal();
+        }
+
+        const btnNext = document.getElementById('btn-next');
+        if (e.key === "ArrowRight") {
+          if (!btnNext.disabled && currentSoalIndex < soalList.length - 1) {
+            nextSoal();
+          }
+        }
+
+        if (e.key === "Enter") {
+          if (!btnNext.disabled) {
+            nextSoal();
+          }
+        }
+      }
+    });
+
+    window.addEventListener("keyup", (e) => {
+      if (e.key === "PrintScreen" || e.keyCode === 44) {
+        navigator.clipboard.writeText(""); 
+      }
+    });
+
+    const resetApp = () => {
+      kembaliKeHome(); 
+    };
+
+    const addEnterListener = (id, action) => {
+      const el = document.getElementById(id);
+      if(el) {
+        el.addEventListener("keypress", function(event) {
+          if (event.key === "Enter") {
+            event.preventDefault(); 
+            action();
+          }
+        });
+      }
+    };
+
+    window.onload = () => {
+      addEnterListener('reg-nama', doRegister);
+      addEnterListener('reg-user', doRegister);
+      addEnterListener('reg-pass', doRegister);
+      addEnterListener('log-user', doLogin);
+      addEnterListener('log-pass', doLogin);
+    };
+
+  </script>
+</body>
+</html>

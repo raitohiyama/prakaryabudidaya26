@@ -7,34 +7,94 @@
   <link rel="icon" href="Logo.svg">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    :root{--primary:#f57c00;--bg-color:#fff3e0;--text-dark:#3e2723;--glass-bg:rgba(255,255,255,0.45);--glass-border:rgba(255,255,255,0.6);--glass-shadow:0 8px 32px 0 rgba(245,124,0,0.15)}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);color:var(--text-dark);min-height:100vh;display:flex;flex-direction:column;position:relative}
-    .blob{position:absolute;filter:blur(60px);z-index:-1;border-radius:50%;opacity:0.6}
-    .blob.orange{width:300px;height:300px;background:#ffcc80;top:-50px;left:-50px}
-    .blob.peach{width:400px;height:400px;background:#ffab91;bottom:10%;right:-100px}
-    .glass{background:var(--glass-bg);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:16px;box-shadow:var(--glass-shadow)}
-    header,footer{text-align:center;padding:1.5rem;z-index:10}
-    header h1{font-size:1.5rem;font-weight:700;color:var(--primary);display:flex;align-items:center;justify-content:center;gap:8px}
+    :root {
+      --primary: #f57c00;
+      --bg-color: #fff3e0;
+      --text-dark: #3e2723;
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: 0 8px 32px 0 rgba(245, 124, 0, 0.15);
+    }
     
-    /* Mengubah max-width dari 900px menjadi 1400px agar cukup untuk 3 kolom */
-    main{flex:1;padding:1rem;width:100%;max-width:1400px;margin:0 auto;z-index:10}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     
-    footer{font-size:0.9rem;margin-top:auto;display:flex;justify-content:center;align-items:center;gap:10px}
-    footer a{color:#25D366;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:5px}
-    .page{animation:fadeIn 0.4s ease-in-out}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    .page-title{text-align:center;font-size:1.3rem;margin-bottom:0.5rem;font-weight:700}
-    .top-nav{display:flex;align-items:center;margin-bottom:1.5rem}
-    .btn-back{background:none;border:none;font-size:1.1rem;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:5px;color:var(--primary);font-weight:600;padding:8px 12px;border-radius:8px;text-decoration:none}
-    .btn-back:hover{background:var(--glass-bg)}
-    #toast{position:fixed;top:-100px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid var(--glass-border);color:var(--primary);font-weight:600;padding:12px 24px;border-radius:30px;z-index:1000;transition:top 0.4s}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
     
-    /* Media Query Responsif: Jika layar kecil, ubah card menjadi menurun ke bawah (1 kolom) */
-    @media (max-width: 992px) {
-      .card-container {
-        grid-template-columns: 1fr !important;
+    .blob { position: absolute; filter: blur(60px); z-index: -1; border-radius: 50%; opacity: 0.6; }
+    .blob.orange { width: 300px; height: 300px; background: #ffcc80; top: -50px; left: -50px; }
+    .blob.peach { width: 400px; height: 400px; background: #ffab91; bottom: 10%; right: -100px; }
+    
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: var(--glass-shadow);
+    }
+    
+    header, footer { text-align: center; padding: 1.5rem; z-index: 10; }
+    header h1 { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px; }
+    
+    main { flex: 1; padding: 1rem; width: 100%; max-width: 1400px; margin: 0 auto; z-index: 10; }
+    
+    footer { font-size: 0.9rem; margin-top: auto; display: flex; justify-content: center; align-items: center; gap: 10px; }
+    footer a { color: #25D366; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+    
+    .page { animation: fadeIn 0.4s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .page-title { text-align: center; font-size: 1.3rem; margin-bottom: 0.5rem; font-weight: 700; }
+    
+    .top-nav { display: flex; align-items: center; margin-bottom: 1.5rem; }
+    .btn-back { background: none; border: none; font-size: 1.1rem; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 5px; color: var(--primary); font-weight: 600; padding: 8px 12px; border-radius: 8px; text-decoration: none; }
+    .btn-back:hover { background: var(--glass-bg); }
+    
+    #toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: var(--primary); font-weight: 600; padding: 12px 24px; border-radius: 30px; z-index: 1000; transition: top 0.4s; }
+    
+    .card-container {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      width: 100%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory; /* Memaksa scroll berhenti tepat di elemen */
+      padding-bottom: 1rem;
+      
+      /* Sembunyikan scrollbar bawaan agar lebih rapi */
+      scrollbar-width: none; /* Untuk Firefox */
+      -ms-overflow-style: none; /* Untuk IE/Edge */
+    }
+    
+    .card-container::-webkit-scrollbar {
+      display: none; /* Untuk Chrome, Safari, dan Opera */
+    }
+
+    .card-container > .glass {
+      /* Lebar card: (100% lebar container - 2 gap (3rem)) dibagi 3 */
+      flex: 0 0 calc((100% - 3rem) / 3);
+      scroll-snap-align: start; /* Titik berhenti scroll pada awalan card */
+    }
+    
+    @media (max-width: 1024px) {
+      .card-container > .glass {
+        /* Ubah menjadi 2 card yang terlihat (1 gap) */
+        flex: 0 0 calc((100% - 1.5rem) / 2);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .card-container > .glass {
+        /* Ubah menjadi 1 card yang terlihat penuh */
+        flex: 0 0 100%;
       }
     }
   </style>
@@ -42,18 +102,20 @@
 <body>
   <div class="blob orange"></div>
   <div class="blob peach"></div>
+  
   <header class="glass" style="border-radius: 0 0 16px 16px; margin-bottom: 1rem;">
     <h1><i class="ph ph-plant"></i> Prakarya Budi Daya</h1>
   </header>
+  
   <main>
     <div class="top-nav">
       <a href="dokumentasi.html" class="btn-back"><i class="ph ph-caret-left"></i> Kembali</a>
     </div>
     <div class="page active">
       <h2 class="page-title">Contoh Dokumentasi yang Diharapkan</h2>
+      <p style="text-align: center; color: var(--primary); font-size: 0.9rem;">Geser ke samping untuk melihat lebih banyak</p>
       
-      <!-- Kontainer 3x1 -->
-      <div class="card-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 2rem; width: 100%;">
+      <div class="card-container">
 
         <!-- CARD C -->
         <div class="glass" style="padding: 1.5rem; text-align: left; border-radius: 16px;">
@@ -196,13 +258,16 @@
       </div>
     </div>
   </main>
+  
   <footer class="glass" style="border-radius: 16px 16px 0 0; margin-top: 1rem;">
     <span>&copy; 2026</span>
     <a href="https://wa.me/6285254135739?text=Selamat%20pagi%20Pak%20Guru,%20saya%20mau%20bertanya%20" target="_blank" onclick="showToast('Membuka WhatsApp...')">
       Pak Guru Rahmad<i class="ph ph-whatsapp-logo" style="font-size: 1.2rem;"></i>
     </a>
   </footer>
+  
   <div id="toast">Notifikasi</div>
+  
   <script>
     function showToast(msg) {
       const toast = document.getElementById('toast');

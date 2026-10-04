@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rekapan Dokumentasi Proyek Seluruh Kelas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 50%, #f8fafc 100%);
+      --crystal-card: rgba(255, 255, 255, 0.75);
+      --crystal-border: rgba(255, 255, 255, 0.85);
+      --crystal-shadow: 0 10px 30px -5px rgba(186, 230, 253, 0.5), 0 4px 6px -2px rgba(125, 211, 252, 0.2);
+      --primary-blue: #0284c7;
+      --pastel-blue-light: #e0f2fe;
+      --pastel-blue-border: #bae6fd;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+    }
+
+    * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    @media print {
+      body {
+        display: none !important;
+      }
+    }
+
+    /* Efek Kristal Minimalis */
+    .crystal-panel {
+      background: var(--crystal-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--crystal-border);
+      box-shadow: var(--crystal-shadow);
+      border-radius: 20px;
+    }
+
+    /* Judul Besar */
+    .header-box {
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .header-title {
+      font-size: 25px;
+      font-weight: 800;
+      color: #0369a1;
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+    }
+
+    /* Tata Letak Tombol Kelas (Desktop & Tablet) */
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      max-width: 900px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .class-btn {
+      padding: 10px 22px;
+      border: 1.5px solid var(--pastel-blue-border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.85);
+      color: #0369a1;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(186, 230, 253, 0.3);
+    }
+
+    .class-btn:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      border-color: #38bdf8;
+    }
+
+    .class-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+    }
+
+    /* Grid 4 Tombol Samping x 2 Baris di Layar HP */
+    @media (max-width: 640px) {
+      .filter-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 0 4px;
+      }
+      .class-btn {
+        padding: 10px 0;
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+      }
+      .header-title {
+        font-size: 18px;
+      }
+    }
+
+    /* Status Info Jumlah Murid & Panduan Geser */
+    .status-container {
+      text-align: center;
+      margin-bottom: 20px;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .count-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: #0284c7;
+      margin-bottom: 4px;
+    }
+
+    .swipe-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.2px;
+    }
+
+    /* Carousel Slider */
+    .carousel-wrapper {
+      width: 100%;
+      max-width: 1350px;
+      position: relative;
+    }
+
+    .cards-slider {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 10px 5px 30px 5px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #7dd3fc rgba(240, 247, 255, 0.6);
+    }
+
+    .cards-slider::-webkit-scrollbar {
+      height: 8px;
+    }
+    .cards-slider::-webkit-scrollbar-track {
+      background: rgba(224, 242, 254, 0.5);
+      border-radius: 8px;
+    }
+    .cards-slider::-webkit-scrollbar-thumb {
+      background: #7dd3fc;
+      border-radius: 8px;
+    }
+
+    /* Pengaturan Card: Terlihat Tepat 3 Card di Desktop */
+    .student-card {
+      flex: 0 0 calc((100% - 40px) / 3);
+      background: var(--crystal-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--crystal-border);
+      box-shadow: var(--crystal-shadow);
+      border-radius: 20px;
+      padding: 20px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    /* Tablet: 2 Card Terlihat */
+    @media (max-width: 1024px) {
+      .student-card {
+        flex: 0 0 calc((100% - 20px) / 2);
+      }
+    }
+
+    /* HP: 1 Card Terlihat Penuh */
+    @media (max-width: 640px) {
+      .student-card {
+        flex: 0 0 100%;
+      }
+    }
+
+    .card-header {
+      border-bottom: 1.5px solid #e0f2fe;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .student-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0369a1;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .student-class {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    .stage-block {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid #e0f2fe;
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 6px rgba(186, 230, 253, 0.15);
+    }
+
+    .stage-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0284c7;
+      margin-bottom: 8px;
+    }
+
+    .stage-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+
+    .img-box {
+      width: 100%;
+      background: #f8fafc;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px dashed #bae6fd;
+      position: relative;
+      min-height: 85px;
+    }
+
+    .img-box img {
+      width: 100%;
+      height: auto;
+      max-height: 240px;
+      object-fit: contain;
+      display: block;
+      pointer-events: none;
+    }
+
+    .watermark-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: 2;
+    }
+
+    .stage-date {
+      font-size: 12px;
+      color: #0284c7;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .no-data, .loading {
+      text-align: center;
+      width: 100%;
+      padding: 40px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      border: 3.5px solid #e0f2fe;
+      border-top: 3.5px solid #0284c7;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 14px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Judul Besar -->
+  <div class="crystal-panel header-box">
+    <h1 class="header-title">Rekapan Dokumentasi Proyek Seluruh Kelas</h1>
+  </div>
+
+  <!-- 8 Tombol Kelas 9C - 9J (Tampilan HP: Grid 4x2) -->
+  <div class="filter-container" id="classButtons">
+    <button class="class-btn" onclick="selectClass('9C')">9C</button>
+    <button class="class-btn" onclick="selectClass('9D')">9D</button>
+    <button class="class-btn" onclick="selectClass('9E')">9E</button>
+    <button class="class-btn" onclick="selectClass('9F')">9F</button>
+    <button class="class-btn" onclick="selectClass('9G')">9G</button>
+    <button class="class-btn" onclick="selectClass('9H')">9H</button>
+    <button class="class-btn" onclick="selectClass('9I')">9I</button>
+    <button class="class-btn" onclick="selectClass('9J')">9J</button>
+  </div>
+
+  <!-- Keterangan Jumlah Murid & Panduan Geser -->
+  <div class="status-container" id="statusContainer">
+    <div class="count-text" id="totalProjectText">Total Proyek = 0 Murid</div>
+    <div class="swipe-text">Geser untuk Melihat Proyek Lainnya ➔</div>
+  </div>
+
+  <!-- Slider Carousel -->
+  <div class="carousel-wrapper">
+    <div class="cards-slider" id="cardContainer">
+      <div class="crystal-panel no-data">Pilih salah satu kelas di atas untuk melihat dokumentasi.</div>
+    </div>
+  </div>
+
+  <script>
+    // URL Web App GAS yang sudah disematkan langsung
+    const GAS_EXEC_URL = 'https://script.google.com/macros/s/AKfycbzE1unJZiwNlauxpFsukhFb46Pf97fXjdXupZx9TVtcDri2SAuN28BmKgzPC_dvGigSIQ/exec';
+
+    // Durasi Cache: 10 Menit di penyimpanan browser
+    const CACHE_DURATION = 10 * 60 * 1000;
+
+    // Mode Pengembang untuk Inspect Element (localhost atau parameter ?dev=true)
+    const urlParams = new URLSearchParams(window.location.search);
+    const isDevMode = urlParams.get('dev') === 'true' || 
+                      window.location.hostname === 'localhost' || 
+                      window.location.hostname === '127.0.0.1' ||
+                      window.location.protocol === 'file:';
+
+    // 1. Dukungan Tombol Back di Ponsel Android
+    window.addEventListener('load', function() {
+      window.history.pushState({ page: 'home' }, "", "");
+    });
+
+    window.addEventListener('popstate', function(event) {
+      const container = document.getElementById('cardContainer');
+      const activeBtn = document.querySelector('.class-btn.active');
+      const statusBox = document.getElementById('statusContainer');
+
+      if (activeBtn) {
+        activeBtn.classList.remove('active');
+        currentClass = '';
+        statusBox.style.display = 'none';
+        container.innerHTML = '<div class="crystal-panel no-data">Pilih salah satu kelas di atas untuk melihat dokumentasi.</div>';
+        window.history.pushState({ page: 'home' }, "", "");
+      } else {
+        window.history.back();
+      }
+    });
+
+    // 2. Proteksi Copy, Paste & Pintasan Screenshot (Hanya aktif jika bukan mode dev)
+    if (!isDevMode) {
+      document.addEventListener('contextmenu', (e) => e.preventDefault());
+      document.addEventListener('copy', (e) => e.preventDefault());
+      document.addEventListener('cut', (e) => e.preventDefault());
+      document.addEventListener('paste', (e) => e.preventDefault());
+
+      document.addEventListener('keydown', function(e) {
+        if (
+          e.key === "PrintScreen" ||
+          e.keyCode === 44 ||
+          e.key === "F12" ||
+          (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) ||
+          (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'p' || e.key === 'a')) ||
+          (e.metaKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'p' || e.key === 'a'))
+        ) {
+          e.preventDefault();
+          return false;
+        }
+      });
+    }
+
+    // 3. Manajemen Cache Lokal
+    function getCache(key) {
+      try {
+        const itemStr = localStorage.getItem('rekapan_' + key);
+        if (!itemStr) return null;
+        const item = JSON.parse(itemStr);
+        const now = new Date().getTime();
+        if (now - item.timestamp > CACHE_DURATION) {
+          localStorage.removeItem('rekapan_' + key);
+          return null;
+        }
+        return item.data;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function setCache(key, data) {
+      try {
+        const item = {
+          data: data,
+          timestamp: new Date().getTime()
+        };
+        localStorage.setItem('rekapan_' + key, JSON.stringify(item));
+      } catch (e) {
+        console.warn('Penyimpanan lokal penuh atau tidak didukung.');
+      }
+    }
+
+    // 4. Pengambilan Data & Rendering Kartu
+    let currentClass = '';
+
+    async function selectClass(className) {
+      if (currentClass === className) return;
+      currentClass = className;
+
+      const buttons = document.querySelectorAll('.class-btn');
+      buttons.forEach(btn => {
+        btn.classList.toggle('active', btn.innerText === className);
+      });
+
+      const container = document.getElementById('cardContainer');
+      const statusBox = document.getElementById('statusContainer');
+      
+      // Sembunyikan status count selama loading
+      statusBox.style.display = 'none';
+
+      // Cek cache perangkat
+      const cachedData = getCache(className);
+      if (cachedData) {
+        renderCards(cachedData);
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="crystal-panel loading">
+          <div class="spinner"></div>
+          Memuat data dokumentasi kelas ${className}...
+        </div>
+      `;
+
+      try {
+        const fetchUrl = `${GAS_EXEC_URL}?action=getRekapan&kelas=${encodeURIComponent(className)}`;
+        const response = await fetch(fetchUrl);
+        
+        if (!response.ok) {
+          throw new Error('Respon server gagal: ' + response.statusText);
+        }
+
+        const data = await response.json();
+        setCache(className, data);
+        renderCards(data);
+      } catch (err) {
+        container.innerHTML = `
+          <div class="crystal-panel no-data" style="color: #ef4444;">
+            Gagal mengambil data. Silakan coba beberapa saat lagi.
+          </div>
+        `;
+      }
+    }
+
+    function renderCards(students) {
+      const container = document.getElementById('cardContainer');
+      const statusBox = document.getElementById('statusContainer');
+      const totalText = document.getElementById('totalProjectText');
+      container.innerHTML = '';
+
+      // Filter: Hanya tampilkan siswa yang memiliki unggahan foto (kolom E-AN tidak kosong)
+      const validStudents = (students || []).filter(s => s.stages && s.stages.length > 0);
+      const totalCount = validStudents.length;
+
+      // Update Teks Total Proyek
+      totalText.innerText = `Total Proyek = ${totalCount} Murid`;
+      statusBox.style.display = 'block';
+
+      if (totalCount === 0) {
+        container.innerHTML = `<div class="crystal-panel no-data">Belum ada dokumentasi yang diunggah untuk kelas ini.</div>`;
+        return;
+      }
+
+      validStudents.forEach(student => {
+        const card = document.createElement('div');
+        card.className = 'student-card';
+
+        let stagesHtml = '';
+        student.stages.forEach(st => {
+          const img1 = st.id1 
+            ? `<div class="img-box"><img src="https://drive.google.com/thumbnail?id=${st.id1}&sz=w800" loading="lazy"/><div class="watermark-overlay"></div></div>` 
+            : `<div class="img-box" style="color:#94a3b8;font-size:12px;">Tidak Ada Foto</div>`;
+
+          const img2 = st.id2 
+            ? `<div class="img-box"><img src="https://drive.google.com/thumbnail?id=${st.id2}&sz=w800" loading="lazy"/><div class="watermark-overlay"></div></div>` 
+            : `<div class="img-box" style="color:#94a3b8;font-size:12px;">Tidak Ada Foto</div>`;
+
+          stagesHtml += `
+            <div class="stage-block">
+              <div class="stage-title">Tahap ${st.tahap}</div>
+              <div class="stage-images">
+                ${img1}
+                ${img2}
+              </div>
+              <div class="stage-date">📅 ${st.tanggal || '-'}</div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="card-header">
+            <div class="student-name" title="${student.nama}">${student.nama}</div>
+            <div class="student-class">Kelas: ${student.kelas}</div>
+          </div>
+          <div class="stages-wrapper">
+            ${stagesHtml}
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      container.scrollLeft = 0;
+    }
+  </script>
+</body>
+</html>
